@@ -1,3 +1,4 @@
+//program to define singly linked list
 // Node class
 class Node {
     int data;
