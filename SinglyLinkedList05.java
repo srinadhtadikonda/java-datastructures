@@ -1,39 +1,68 @@
-class Node:
-  def __init__(self, data):
-    self.data = data
-    self.next = None
+// Node class
+class Node {
+    int data;
+    Node next;
 
-class SinglyLinkedList:
-  def __init__(self):
-    self.head = None
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
 
-  def insert_at_ending(self, data):
-    ne = Node(data)
-    temp = self.head
-    while temp.next:
-      temp = temp.next
-    temp.next = ne
+// Singly Linked List class
+class SinglyLinkedList {
+    Node head;
 
-  def display(self):
-    if self.head is None:
-      print("List is Empty")
-    else:
-      temp = self.head
-      while temp:
-        print(temp.data, "-->", end="")
-        temp = temp.next
+    SinglyLinkedList() {
+        this.head = null;
+    }
 
-L = SinglyLinkedList()
-n = Node(10)
-L.head = n
-n1 = Node(20)
-n.next = n1
-n2 = Node(30)
-n1.next = n2
-n3 = Node(40)
-n2.next = n3
+    // Insert at the end
+    void insend(int data) {
+        Node ne = new Node(data);
+        if (head == null) {
+            head = ne;
+        } else {
+            Node temp = head;
+            while (temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = ne;
+        }
+    }
 
-L.display()
-print("\n")
-L.insert_at_ending(45)
-L.display()
+    // Display list
+    void display() {
+        if (head == null) {
+            System.out.println("List is Empty");
+        } else {
+            Node temp = head;
+            while (temp != null) {
+                System.out.print(temp.data + " --> ");
+                temp = temp.next;
+            }
+            System.out.println("null");
+        }
+    }
+}
+
+// Main class
+public class Main {
+    public static void main(String[] args) {
+        SinglyLinkedList L = new SinglyLinkedList();
+
+        Node n = new Node(10);
+        L.head = n;
+        Node n1 = new Node(20);
+        n.next = n1;
+        Node n2 = new Node(30);
+        n1.next = n2;
+        Node n3 = new Node(40);
+        n2.next = n3;
+
+        L.display();
+        System.out.println("-------------------");
+        L.insend(45);
+        L.display();
+    }
+}
