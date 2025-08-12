@@ -1,4 +1,4 @@
-// Node class
+// Insert at given position
 class Node {
     int data;
     Node next;
