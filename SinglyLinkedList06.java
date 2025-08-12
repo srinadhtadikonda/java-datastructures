@@ -1,4 +1,6 @@
+package corejavaprograms;
 // Insert at given position
+import  java.util.*;
 class Node {
     int data;
     Node next;
@@ -33,7 +35,6 @@ class SinglyLinkedList {
         np.next = temp.next;
         temp.next = np;
     }
-
     // Display the list
     void display() {
         if (head == null) {
@@ -44,3 +45,36 @@ class SinglyLinkedList {
                 System.out.print(temp.data + " --> ");
                 temp = temp.next;
             }
+        }
+    }
+}
+public class Main 
+{
+    public static void main(String[] args)
+    {
+        SinglyLinkedList L = new SinglyLinkedList();
+        
+          Node n = new Node(10);
+          L.head = n;
+
+        Node n1 = new Node(20);
+        n.next = n1;
+
+        Node n2 = new Node(30);
+        n1.next = n2;
+
+        Node n3 = new Node(40);
+        n2.next = n3;
+
+        L.display();
+        
+        
+        Scanner sc = new Scanner(System.in);
+           System.out.print("Enter position to insert at: ");
+                    int pos = sc.nextInt();
+                    System.out.print("Enter data to insert: ");
+                    int posData = sc.nextInt();
+                    L.insertAtPosition(pos, posData);
+                    L.display();
+    }
+    }
