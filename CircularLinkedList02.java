@@ -61,4 +61,23 @@ class CircularLinkedList {
         Node n3 = new Node(40);
         n2.next = n3;
 
-        n3.next =
+        n3.next = head; // Make it circular
+        
+    }
+}
+// Main class
+public class Main {
+    public static void main(String[] args) {
+        CircularLinkedList cll = new CircularLinkedList();
+        cll.createInitialList();
+
+        System.out.println("Circular Linked List:");
+        cll.display();
+        
+        cll.insertAtBeginning(45);
+              cll.display();
+      
+    }
+}
+
+        
