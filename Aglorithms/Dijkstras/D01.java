@@ -1,69 +1,112 @@
-//Implementation of Dijkstra's Algorithm
-class Graph:
-    def __init__(self, size):
-        self.adj_matrix = [[0] * size for _ in range(size)]
-        self.size = size
-        self.vertex_data = [''] * size
+//Adjacency matrix representation, vertex labels, and Dijkstra’s algorithm:
+import java.util.*;
 
-    def add_edge(self, u, v, weight):
-        if 0 <= u < self.size and 0 <= v < self.size:
-            self.adj_matrix[u][v] = weight
-            self.adj_matrix[v][u] = weight  # For undirected graph
+class Graph {
+    private int[][] adjMatrix;
+    private int size;
+    private String[] vertexData;
 
-    def add_vertex_data(self, vertex, data):
-        if 0 <= vertex < self.size:
-            self.vertex_data[vertex] = data
+    public Graph(int size) {
+        this.size = size;
+        adjMatrix = new int[size][size];
+        vertexData = new String[size];
+    }
 
-    def dijkstra(self, start_vertex_data):
-        start_vertex = self.vertex_data.index(start_vertex_data)
-        distances = [float('inf')] * self.size
-        distances[start_vertex] = 0
-        visited = [False] * self.size
+    public void addEdge(int u, int v, int weight) {
+        if (u >= 0 && u < size && v >= 0 && v < size) {
+            adjMatrix[u][v] = weight;
+            adjMatrix[v][u] = weight; // Undirected graph
+        }
+    }
 
-        for _ in range(self.size):
-            min_distance = float('inf')
-            u = None
-            for i in range(self.size):
-                if not visited[i] and distances[i] < min_distance:
-                    min_distance = distances[i]
-                    u = i
+    public void addVertexData(int vertex, String data) {
+        if (vertex >= 0 && vertex < size) {
+            vertexData[vertex] = data;
+        }
+    }
 
-            if u is None:
-                break
+    public int[] dijkstra(String startVertexData) {
+        int startVertex = -1;
+        for (int i = 0; i < size; i++) {
+            if (vertexData[i].equals(startVertexData)) {
+                startVertex = i;
+                break;
+            }
+        }
 
-            visited[u] = True
+        if (startVertex == -1) {
+            throw new IllegalArgumentException("Start vertex not found: " + startVertexData);
+        }
 
-            for v in range(self.size):
-                if self.adj_matrix[u][v] != 0 and not visited[v]:
-                    alt = distances[u] + self.adj_matrix[u][v]
-                    if alt < distances[v]:
-                        distances[v] = alt
+        int[] distances = new int[size];
+        boolean[] visited = new boolean[size];
 
-        return distances
+        Arrays.fill(distances, Integer.MAX_VALUE);
+        distances[startVertex] = 0;
 
-g = Graph(7)
+        for (int count = 0; count < size - 1; count++) {
+            int u = minDistance(distances, visited);
+            if (u == -1) break;
+            visited[u] = true;
 
-g.add_vertex_data(0, 'A')
-g.add_vertex_data(1, 'B')
-g.add_vertex_data(2, 'C')
-g.add_vertex_data(3, 'D')
-g.add_vertex_data(4, 'E')
-g.add_vertex_data(5, 'F')
-g.add_vertex_data(6, 'G')
+            for (int v = 0; v < size; v++) {
+                if (!visited[v] && adjMatrix[u][v] != 0 &&
+                    distances[u] != Integer.MAX_VALUE &&
+                    distances[u] + adjMatrix[u][v] < distances[v]) {
+                    distances[v] = distances[u] + adjMatrix[u][v];
+                }
+            }
+        }
 
-g.add_edge(3, 0, 4)  # D - A, weight 5
-g.add_edge(3, 4, 2)  # D - E, weight 2
-g.add_edge(0, 2, 3)  # A - C, weight 3
-g.add_edge(0, 4, 4)  # A - E, weight 4
-g.add_edge(4, 2, 4)  # E - C, weight 4
-g.add_edge(4, 6, 5)  # E - G, weight 5
-g.add_edge(2, 5, 5)  # C - F, weight 5
-g.add_edge(2, 1, 2)  # C - B, weight 2
-g.add_edge(1, 5, 2)  # B - F, weight 2
-g.add_edge(6, 5, 5)  # G - F, weight 5
+        return distances;
+    }
 
-# Dijkstra's algorithm from D to all vertices
-print("\nDijkstra's Algorithm starting from vertex D:")
-distances = g.dijkstra('D')
-for i, d in enumerate(distances):
-    print(f"Distance from D to {g.vertex_data[i]}: {d}")
+    private int minDistance(int[] distances, boolean[] visited) {
+        int min = Integer.MAX_VALUE;
+        int minIndex = -1;
+
+        for (int v = 0; v < size; v++) {
+            if (!visited[v] && distances[v] < min) {
+                min = distances[v];
+                minIndex = v;
+            }
+        }
+        return minIndex;
+    }
+
+    public String getVertexData(int index) {
+        return vertexData[index];
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Graph g = new Graph(7);
+
+        g.addVertexData(0, "A");
+        g.addVertexData(1, "B");
+        g.addVertexData(2, "C");
+        g.addVertexData(3, "D");
+        g.addVertexData(4, "E");
+        g.addVertexData(5, "F");
+        g.addVertexData(6, "G");
+
+        g.addEdge(3, 0, 4); // D - A
+        g.addEdge(3, 4, 2); // D - E
+        g.addEdge(0, 2, 3); // A - C
+        g.addEdge(0, 4, 4); // A - E
+        g.addEdge(4, 2, 4); // E - C
+        g.addEdge(4, 6, 5); // E - G
+        g.addEdge(2, 5, 5); // C - F
+        g.addEdge(2, 1, 2); // C - B
+        g.addEdge(1, 5, 2); // B - F
+        g.addEdge(6, 5, 5); // G - F
+
+        System.out.println("\nDijkstra's Algorithm starting from vertex D:");
+        int[] distances = g.dijkstra("D");
+
+        for (int i = 0; i < distances.length; i++) {
+            System.out.println("Distance from D to " + g.getVertexData(i) + ": " + distances[i]);
+        }
+    }
+}
